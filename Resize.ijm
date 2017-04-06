@@ -27,7 +27,7 @@ function processDirectory(targDirPath) {
 		for (i = 0; i < list.length; i++) {
 			skipItemFlag = false;
 			if(endsWith(list[i],"/")) skipItemFlag = true; //Check item should be a file
-			print(skipItemFlag + "->" + output+ list[i]);
+			
 			if(!skipItemFlag) { 
 				doResize(input, output, list[i]);
 				print(output + list[i] + " CREATED");	
@@ -40,14 +40,15 @@ function processDirectory(targDirPath) {
 }
 
 function doResize(input, output, filename) {
-	print("CallEED");
     open(input + filename);
     height = getHeight();
     width = getWidth();
     if(width > height) {
 		run("Scale...", "x=- y=- width=806 height=604 interpolation=Bilinear average create");     	
-    }else {
+    }else if(width < height){
 	 	run("Scale...", "x=- y=- width=604 height=806 interpolation=Bilinear average create"); 	
+    } else { //Square image
+ 	 	run("Scale...", "x=- y=- width=604 height=604 interpolation=Bilinear average create");   	
     }
 
     saveAs("Tiff", output + filename);
